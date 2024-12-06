@@ -364,39 +364,39 @@ group by
     -- inner join ( 用戶王小明的已使用堂數) as "COURSE_BOOKING"
     -- on "COURSE_BOOKING".user_id = "CREDIT_PURCHASE".user_id;
 -- 不用join
-select
-    user_id,
-    (
-        SUM(purchased_credits) -(
-            select
-                count(*)
-            from
-                "COURSE_BOOKING"
-            where
-                user_id = (
-                    select
-                        id
-                    from
-                        "USER"
-                    where
-                        email = 'wXlTq@hexschooltest.io'
-                )
-                and status not in ('課程已取消', '即將授課')
-        )
-    ) as remaining_credit
-from
-    "CREDIT_PURCHASE"
-where
-    user_id = (
-        select
-            id
-        from
-            "USER"
-        where
-            email = 'wXlTq@hexschooltest.io'
-    )
-group by
-    user_id;
+-- select
+--     user_id,
+--     (
+--         SUM(purchased_credits) -(
+--             select
+--                 count(*)
+--             from
+--                 "COURSE_BOOKING"
+--             where
+--                 user_id = (
+--                     select
+--                         id
+--                     from
+--                         "USER"
+--                     where
+--                         email = 'wXlTq@hexschooltest.io'
+--                 )
+--                 and status not in ('課程已取消', '即將授課')
+--         )
+--     ) as remaining_credit
+-- from
+--     "CREDIT_PURCHASE"
+-- where
+--     user_id = (
+--         select
+--             id
+--         from
+--             "USER"
+--         where
+--             email = 'wXlTq@hexschooltest.io'
+--     )
+-- group by
+--     user_id;
 
 -- 用inner join
 select
@@ -445,33 +445,33 @@ where
 -- 顯示須包含以下欄位： 教練名稱 , 經驗年數, 專長名稱
 
 -- 沒看直播硬寫的 ( ´･ω･`)
-select
-	u.name as 教練名稱 , 
-	ces.experience_years as 經驗年數, 
-	ces.skill_name as 專長名稱
-from "USER" u 
-inner join(
-	-- ces = coach_experienceYears_skill
-	-- 拿 專長為重訓的教練 的 user id & 年資 experience years
-	select
-		c.user_id, 
-		c.experience_years,
-		cc.skill_name
-	from 
-		"COACH" c 
-	inner join (
-		-- cc = chosen_coach 
-		-- 拿 專長為重訓的教練 coach id & 專長名稱 skill name
-		select
-			cls.coach_id,
-			s.name as skill_name
-		from 
-			"COACH_LINK_SKILL" cls 
-		inner join "SKILL" s on cls.skill_id = s.id 
-		where s.name = '重訓'
-	) cc on c.id = cc.coach_id
-) ces on u.id = ces.user_id
-order by ces.experience_years DESC;
+-- select
+-- 	u.name as 教練名稱 , 
+-- 	ces.experience_years as 經驗年數, 
+-- 	ces.skill_name as 專長名稱
+-- from "USER" u 
+-- inner join(
+-- 	-- ces = coach_experienceYears_skill
+-- 	-- 拿 專長為重訓的教練 的 user id & 年資 experience years
+-- 	select
+-- 		c.user_id, 
+-- 		c.experience_years,
+-- 		cc.skill_name
+-- 	from 
+-- 		"COACH" c 
+-- 	inner join (
+-- 		-- cc = chosen_coach 
+-- 		-- 拿 專長為重訓的教練 coach id & 專長名稱 skill name
+-- 		select
+-- 			cls.coach_id,
+-- 			s.name as skill_name
+-- 		from 
+-- 			"COACH_LINK_SKILL" cls 
+-- 		inner join "SKILL" s on cls.skill_id = s.id 
+-- 		where s.name = '重訓'
+-- 	) cc on c.id = cc.coach_id
+-- ) ces on u.id = ces.user_id
+-- order by ces.experience_years DESC;
 
 -- 學會比較精簡的 join 了
 select
